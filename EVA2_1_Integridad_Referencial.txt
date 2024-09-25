@@ -1,0 +1,174 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+
+Instale la versión más reciente de PowerShell para obtener nuevas características y mejoras. https://aka.ms/PSWindows
+
+PS C:\Users\sergi> /mysqlsh
+/mysqlsh : El término '/mysqlsh' no se reconoce como nombre de un cmdlet, función, archivo de script o programa
+ejecutable. Compruebe si escribió correctamente el nombre o, si incluyó una ruta de acceso, compruebe que dicha ruta
+es correcta e inténtelo de nuevo.
+En línea: 1 Carácter: 1
++ /mysqlsh
++ ~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (/mysqlsh:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\sergi> mysqlsh
+MySQL Shell 8.0.38
+
+Copyright (c) 2016, 2024, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > sql
+ReferenceError: sql is not defined
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.39 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > CREATE DATABASE tdb_eva2
+                               -> ;
+Query OK, 1 row affected (0.0062 sec)
+ MySQL  localhost:3306 ssl  SQL > SELECT * DATABASES
+                               -> ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DATABASES' at line 1
+ MySQL  localhost:3306 ssl  SQL > CREATE TABLE factura(
+                               -> id int key auto_increment,
+                               -> nombre varchar(50) not null,
+                               -> apellidos varchar(50),
+                               -> rfc varchar(13) not null);
+ERROR: 1046 (3D000): No database selected
+ MySQL  localhost:3306 ssl  SQL > use tbd_eva2
+MySQL Error 1049: Unknown database 'tbd_eva2'
+ MySQL  localhost:3306 ssl  SQL > use tbd_eva2;
+MySQL Error 1049: Unknown database 'tbd_eva2'
+ MySQL  localhost:3306 ssl  SQL > use tdb_eva2;
+Default schema set to `tdb_eva2`.
+Fetching global names, object names from `tdb_eva2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE factura( id int key auto_increment, nombre varchar(50) not null, apellidos varchar(50), rfc varchar(13) not null);
+Query OK, 0 rows affected (0.0308 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > insert into facturas(nombre, apellidos, rfc) values("Juan","Perez","1234567898765");
+ERROR: 1146 (42S02): Table 'tdb_eva2.facturas' doesn't exist
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE factura( id int key auto_increment, nombre varchar(50) not null, apellidos varchar(50), rfc varchar(13) not null);
+ERROR: 1050 (42S01): Table 'factura' already exists
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > insert into facturas(nombre, apellidos, rfc) values("Juan","Perez","1234567898765");
+ERROR: 1146 (42S02): Table 'tdb_eva2.facturas' doesn't exist
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE factura( id int key auto_increment, nombre varchar(50) not null, apellidos varchar(50), rfc varchar(13) not null);
+ERROR: 1050 (42S01): Table 'factura' already exists
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > show tables;
++--------------------+
+| Tables_in_tdb_eva2 |
++--------------------+
+| factura            |
++--------------------+
+1 row in set (0.0142 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > insert into factura(nombre, apellidos, rfc) values("Juan","Perez","1234567898765");
+Query OK, 1 row affected (0.0054 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura RENAME cliente
+                                         -> ;
+Query OK, 0 rows affected (0.0255 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > show tables;
++--------------------+
+| Tables_in_tdb_eva2 |
++--------------------+
+| cliente            |
++--------------------+
+1 row in set (0.0022 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE factura(
+                                         -> folio int key auto_increment,
+                                         -> idCliente int not null
+                                         -> foreign key(idCliente)
+                                         -> references cliente(id);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key(idCliente)
+references cliente(id)' at line 4
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE factura( folio int key auto_increment, idCliente int not null foreign key(idCliente) references cliente(id));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'foreign key(idCliente) references cliente(id))' at line 1
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > CREATE TABLE factura(folio int key auto_increment, idCliente int not null, foreign key(idCliente) references cliente(id));
+Query OK, 0 rows affected (0.0557 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > SHOW CREATE TABLE factura;
++---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+
+                                                                         |
++---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `folio` int NOT NULL AUTO_INCREMENT,
+  `idCliente` int NOT NULL,
+  PRIMARY KEY (`folio`),
+  KEY `idCliente` (`idCliente`),
+  CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0023 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > insert into factura (idCliente)
+                                         -> value(5);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`tdb_eva2`.`factura`, CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`))
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > insert into factura (idCliente) value(1);
+Query OK, 1 row affected (0.0045 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > insert into factura (idCliente) value(2);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`tdb_eva2`.`factura`, CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`))
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select * from factura
+                                         -> ;
++-------+-----------+
+| folio | idCliente |
++-------+-----------+
+|     2 |         1 |
++-------+-----------+
+1 row in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > delete "2" from factura;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"2" from factura' at line 1
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > delete 2 from factura;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '2 from factura' at line 1
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > delete from cliente where id = 1;
+ERROR: 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`tdb_eva2`.`factura`, CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`))
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > delete from factura where idCliente = 1;
+Query OK, 1 row affected (0.0227 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select * factura;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'factura' at line 1
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select * from factura;
+Empty set (0.0007 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > delete from factura where idCliente = 1;
+Query OK, 0 rows affected (0.0008 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > SHOW CREATE factura;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'factura' at line 1
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > SHOW CREATE TABLE factura;
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+
+                                                                                          |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `folio` int NOT NULL AUTO_INCREMENT,
+  `idCliente` int NOT NULL,
+  PRIMARY KEY (`folio`),
+  KEY `idCliente` (`idCliente`),
+  CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0011 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > alter table factura drio constraint factura_ibfk_1
+                                         -> ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'drio constraint factura_ibfk_1' at line 1
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > alter table factura drip constraint factura_ibfk_1 ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'drip constraint factura_ibfk_1' at line 1
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > alter table factura drop constraint factura_ibfk_1 ;
+Query OK, 0 rows affected (0.0206 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > insert into captura (idCliente) value (5);
+ERROR: 1146 (42S02): Table 'tdb_eva2.captura' doesn't exist
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > insert into factura (idCliente) value (5);
+Query OK, 1 row affected (0.0100 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select * from factura;
++-------+-----------+
+| folio | idCliente |
++-------+-----------+
+|     4 |         5 |
++-------+-----------+
+1 row in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL >
