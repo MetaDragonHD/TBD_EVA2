@@ -1,0 +1,430 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. Todos los derechos reservados.
+
+Instale la versión más reciente de PowerShell para obtener nuevas características y mejoras. https://aka.ms/PSWindows
+
+PS C:\Users\sergi> \mysqlsh
+\mysqlsh : El término '\mysqlsh' no se reconoce como nombre de un cmdlet, función, archivo de script o programa
+ejecutable. Compruebe si escribió correctamente el nombre o, si incluyó una ruta de acceso, compruebe que dicha ruta
+es correcta e inténtelo de nuevo.
+En línea: 1 Carácter: 1
++ \mysqlsh
++ ~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (\mysqlsh:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\sergi> mysql
+mysql : El término 'mysql' no se reconoce como nombre de un cmdlet, función, archivo de script o programa ejecutable.
+Compruebe si escribió correctamente el nombre o, si incluyó una ruta de acceso, compruebe que dicha ruta es correcta e
+inténtelo de nuevo.
+En línea: 1 Carácter: 1
++ mysql
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (mysql:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\sergi> \sql
+\sql : El término '\sql' no se reconoce como nombre de un cmdlet, función, archivo de script o programa ejecutable.
+Compruebe si escribió correctamente el nombre o, si incluyó una ruta de acceso, compruebe que dicha ruta es correcta e
+inténtelo de nuevo.
+En línea: 1 Carácter: 1
++ \sql
++ ~~~~
+    + CategoryInfo          : ObjectNotFound: (\sql:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\sergi> \mysql
+\mysql : El término '\mysql' no se reconoce como nombre de un cmdlet, función, archivo de script o programa
+ejecutable. Compruebe si escribió correctamente el nombre o, si incluyó una ruta de acceso, compruebe que dicha ruta
+es correcta e inténtelo de nuevo.
+En línea: 1 Carácter: 1
++ \mysql
++ ~~~~~~
+    + CategoryInfo          : ObjectNotFound: (\mysql:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\sergi> mysql
+mysql : El término 'mysql' no se reconoce como nombre de un cmdlet, función, archivo de script o programa ejecutable.
+Compruebe si escribió correctamente el nombre o, si incluyó una ruta de acceso, compruebe que dicha ruta es correcta e
+inténtelo de nuevo.
+En línea: 1 Carácter: 1
++ mysql
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (mysql:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\sergi> sql
+sql : El término 'sql' no se reconoce como nombre de un cmdlet, función, archivo de script o programa ejecutable.
+Compruebe si escribió correctamente el nombre o, si incluyó una ruta de acceso, compruebe que dicha ruta es correcta e
+inténtelo de nuevo.
+En línea: 1 Carácter: 1
++ sql
++ ~~~
+    + CategoryInfo          : ObjectNotFound: (sql:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\sergi> mysqlsh
+MySQL Shell 8.0.38
+
+Copyright (c) 2016, 2024, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > sql
+ReferenceError: sql is not defined
+ MySQL  JS > mysql
+<mysql>
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.39 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > use tbd_eva2
+MySQL Error 1049: Unknown database 'tbd_eva2'
+ MySQL  localhost:3306 ssl  SQL > use tdb_eva2
+Default schema set to `tdb_eva2`.
+Fetching global names, object names from `tdb_eva2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > show tables;
++--------------------+
+| Tables_in_tdb_eva2 |
++--------------------+
+| cliente            |
+| factura            |
++--------------------+
+2 rows in set (0.0087 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select * from cliente;
++----+--------+-----------+---------------+
+| id | nombre | apellidos | rfc           |
++----+--------+-----------+---------------+
+|  1 | Juan   | Perez     | 1234567898765 |
++----+--------+-----------+---------------+
+1 row in set (0.0245 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select * from factura;
++-------+-----------+
+| folio | idCliente |
++-------+-----------+
+|     4 |         5 |
++-------+-----------+
+1 row in set (0.0198 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES CLIENTE(id);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`tdb_eva2`.`#sql-19b8_8`, CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`))
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > delete from factura where idCliente = 5;
+Query OK, 1 row affected (0.0121 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select * from factura
+                                         -> ;
+Empty set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES CLIENTE(id);
+Query OK, 0 rows affected (0.0975 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > SHOW CREATE TABLE factura;
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+
+                                                                                          |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `folio` int NOT NULL AUTO_INCREMENT,
+  `idCliente` int NOT NULL,
+  PRIMARY KEY (`folio`),
+  KEY `idCliente` (`idCliente`),
+  CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura
+                                         -> DROP CONSTRAINT factura_idfk_1;
+ERROR: 3940 (HY000): Constraint 'factura_idfk_1' does not exist.
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura DROP CONSTRAINT factura_ibfk_1;
+Query OK, 0 rows affected (0.0187 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > show create table factura;
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+
+     |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `folio` int NOT NULL AUTO_INCREMENT,
+  `idCliente` int NOT NULL,
+  PRIMARY KEY (`folio`),
+  KEY `idCliente` (`idCliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+---------------------------------ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES CLIENTE(id)  ;--------------------
+Query OK, 0 rows affected (0.0754 sec)------ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES CLIENTE(id)  ;
+1 row in set (0.0010 sec)                   ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES CLIENTE(id) ;
+Records: 0  Duplicates: 0  Warnings: 0SQL > ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES CLIENTE(id);
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL >
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES CLIENTE(id)  ;
+Query OK, 0 rows affected (0.0829 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura DROP CONSTRAINT factura_ibfk_1;
+Query OK, 0 rows affected (0.0166 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES CLIENTE(id) ON DELETE restrict ON UPDATE restrict;
+Query OK, 0 rows affected (0.0834 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > show create table factura;
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                             |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `folio` int NOT NULL AUTO_INCREMENT,
+  `idCliente` int NOT NULL,
+  PRIMARY KEY (`folio`),
+  KEY `idCliente` (`idCliente`),
+  CONSTRAINT `factura_ibfk_2` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`),
+  CONSTRAINT `factura_ibfk_3` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura DROP CONSTRAINT factura_ibfk_2;
+Query OK, 0 rows affected (0.0192 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura DROP CONSTRAINT factura_ibfk_3;
+Query OK, 0 rows affected (0.0141 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > show create table factura;
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+                                                                                                 |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `folio` int NOT NULL AUTO_INCREMENT,
+  `idCliente` int NOT NULL,
+  PRIMARY KEY (`folio`),
+  KEY `idCliente` (`idCliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES CLIENTE(id) ON DELETE restrict ON UPDATE restrict;
+Query OK, 0 rows affected (0.0745 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > show create table factura;
++---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+
+                                                                        |
++---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `folio` int NOT NULL AUTO_INCREMENT,
+  `idCliente` int NOT NULL,
+  PRIMARY KEY (`folio`),
+  KEY `idCliente` (`idCliente`),
+  CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > SELECT * FROM factura;
+Empty set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > SELECT * FROM cliente;
++----+--------+-----------+---------------+
+| id | nombre | apellidos | rfc           |
++----+--------+-----------+---------------+
+|  1 | Juan   | Perez     | 1234567898765 |
++----+--------+-----------+---------------+
+1 row in set (0.0021 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO factura VALUES (2);
+ERROR: 1136 (21S01): Column count doesn't match value count at row 1
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > UPDATE cliente SET id = 5;
+Query OK, 1 row affected (0.0112 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > UPDATE cliente SET id = 1 WHERE id = 2;;
+Query OK, 0 rows affected (0.0008 sec)
+
+Rows matched: 0  Changed: 0  Warnings: 0
+ERROR: 1065 (42000): Query was empty
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > UPDATE cliente SET id = 1 WHERE id = 2;
+Query OK, 0 rows affected (0.0008 sec)
+
+Rows matched: 0  Changed: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > SELECT * FROM cliente;
++----+--------+-----------+---------------+
+| id | nombre | apellidos | rfc           |
++----+--------+-----------+---------------+
+|  5 | Juan   | Perez     | 1234567898765 |
++----+--------+-----------+---------------+
+1 row in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > UPDATE cliente SET id = 1;
+Query OK, 1 row affected (0.0107 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > UPDATE cliente SET id = 5 WHERE id = 1;
+Query OK, 1 row affected (0.0097 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > UPDATE cliente SET id = 1;
+Query OK, 1 row affected (0.0101 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES CLIENTE(id) ON DELETE restrict ON UPDATE restrict;
+Query OK, 0 rows affected (0.0868 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > show create table factura;
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+
+
+                                               |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `folio` int NOT NULL AUTO_INCREMENT,
+  `idCliente` int NOT NULL,
+  PRIMARY KEY (`folio`),
+  KEY `idCliente` (`idCliente`),
+  CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `factura_ibfk_2` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES cliente(id) ON DELETE cascade ON UPDATE cascade;
+Query OK, 0 rows affected (0.0845 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > UPDATE cliente SET id = 5 WHERE id = 1;
+Query OK, 1 row affected (0.0069 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY (idCliente) REFERENCES cliente(id) ON DELETE restrict ON UPDATE restrict;
+Query OK, 0 rows affected (0.0819 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > DELETE FROM CLIENTE;
+Query OK, 1 row affected (0.0122 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select * from cliente;
+Empty set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select from factura;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from factura' at line 1
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select * from factura;
+Empty set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura DROP CONSTRAINT factura_ibfk_1;
+Query OK, 0 rows affected (0.0194 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura DROP CONSTRAINT factura_ibfk_2;
+Query OK, 0 rows affected (0.0171 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura DROP CONSTRAINT factura_ibfk_3;
+Query OK, 0 rows affected (0.0184 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura DROP CONSTRAINT factura_ibfk_4;
+Query OK, 0 rows affected (0.0174 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > show create table factura;
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+                                                                                                 |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `folio` int NOT NULL AUTO_INCREMENT,
+  `idCliente` int NOT NULL,
+  PRIMARY KEY (`folio`),
+  KEY `idCliente` (`idCliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0011 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > show create table cliente;
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+                                                                                                                                     |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| cliente | CREATE TABLE `cliente` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `apellidos` varchar(50) DEFAULT NULL,
+  `rfc` varchar(13) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0021 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO cliente(Nombre, Apellido, rfc) values ("juan","Perez","ASD112233652"),("XXX","YYY","165465460");
+ERROR: 1054 (42S22): Unknown column 'Apellido' in 'field list'
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO cliente(nombre, apellido, rfc) values ("juan","Perez","ASD112233652"),("XXX","YYY","165465460");
+ERROR: 1054 (42S22): Unknown column 'apellido' in 'field list'
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > INSERT INTO cliente(nombre, apellidos, rfc) values ("juan","Perez","ASD112233652"),("XXX","YYY","165465460");
+Query OK, 2 rows affected (0.0106 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > insert into factura(idCliente) values (6),(7),(7),(6),(7);
+Query OK, 5 rows affected (0.0103 sec)
+
+Records: 5  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select * from cliente;
++----+--------+-----------+--------------+
+| id | nombre | apellidos | rfc          |
++----+--------+-----------+--------------+
+|  6 | juan   | Perez     | ASD112233652 |
+|  7 | XXX    | YYY       | 165465460    |
++----+--------+-----------+--------------+
+2 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > select * from factura;
++-------+-----------+
+| folio | idCliente |
++-------+-----------+
+|     5 |         6 |
+|     8 |         6 |
+|     6 |         7 |
+|     7 |         7 |
+|     9 |         7 |
++-------+-----------+
+5 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL >  ALTER TABLE factura
+                                         -> ADD CONSTRAINT FOREIGN KEY(idCliente) REFERENCES cliente(id) on delete set null on update set null;
+ERROR: 1830 (HY000): Column 'idCliente' cannot be NOT NULL: needed in a foreign key constraint 'factura_ibfk_1' SET NULL
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY(idCliente) REFERENCES cliente(id) on delete no action on update no action;
+Query OK, 5 rows affected (0.0665 sec)
+
+Records: 5  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura DROP CONSTRAINT factura_ibfk_1;
+Query OK, 0 rows affected (0.0184 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > SHOW CREATE TABLE factura;
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+                                                                                                  |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `folio` int NOT NULL AUTO_INCREMENT,
+  `idCliente` int NOT NULL,
+  PRIMARY KEY (`folio`),
+  KEY `idCliente` (`idCliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > ALTER TABLE factura ADD CONSTRAINT FOREIGN KEY(idCliente) REFERENCES cliente(id) on delete cascade on update cascade;
+Query OK, 5 rows affected (0.0830 sec)
+
+Records: 5  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL > SHOW CREATE TABLE factura;
++---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table
+
+                                                                       |
++---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| factura | CREATE TABLE `factura` (
+  `folio` int NOT NULL AUTO_INCREMENT,
+  `idCliente` int NOT NULL,
+  PRIMARY KEY (`folio`),
+  KEY `idCliente` (`idCliente`),
+  CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  tdb_eva2  SQL >
